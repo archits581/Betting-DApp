@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 // A simple smart contract
-contract MessageContract {
+contract Betting {
     
     // Structure to model Teams.
     // id - unique id of the team

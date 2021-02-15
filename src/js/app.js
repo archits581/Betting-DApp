@@ -1,68 +1,52 @@
+const Web3 = require('web3');
+
 App = {
   web3Provider: null,
   contracts: {},
+  account: '0x0',
+  hasVoted: false,
 
-  init: async function() {
-    // Load pets.
-    $.getJSON('../pets.json', function(data) {
-      var petsRow = $('#petsRow');
-      var petTemplate = $('#petTemplate');
-
-      for (i = 0; i < data.length; i ++) {
-        petTemplate.find('.panel-title').text(data[i].name);
-        petTemplate.find('img').attr('src', data[i].picture);
-        petTemplate.find('.pet-breed').text(data[i].breed);
-        petTemplate.find('.pet-age').text(data[i].age);
-        petTemplate.find('.pet-location').text(data[i].location);
-        petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-
-        petsRow.append(petTemplate.html());
-      }
-    });
-
-    return await App.initWeb3();
+  init: function() {
+    console.log('init');
+    return App.initWeb3();
   },
 
-  initWeb3: async function() {
-    /*
-     * Replace me...
-     */
-
+  initWeb3: function() {
+    // TODO: refactor conditional
+    
+    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    web3 = new Web3(App.web3Provider);
+    
+    web3.eth.getBlockNumber(function(error, result){ 
+      if (!error)
+        console.log("block number => ", result)
+    });
+    var version = web3.version.api;
+    console.log(version);
+    ethereum.enable();
     return App.initContract();
   },
 
   initContract: function() {
-    /*
-     * Replace me...
-     */
-
-    return App.bindEvents();
+    $.getJSON("Betting.json", async function(BettingContract) {
+      // const id = await web3.eth.net.getId();
+      const deployedNet = BettingContract.networks[5777];
+      const contract = TruffleContract(BettingContract);
+      contract.setProvider(web3.currentProvider);
+      console.log(contract);
+      console.log(contract.getTeamName("0"));
+    });
+    // return App.getTeams();
   },
 
-  bindEvents: function() {
-    $(document).on('click', '.btn-adopt', App.handleAdopt);
-  },
+  // getTeams: function(contract) {
+  //   console.log(contract.methods.getTeamName.call(0));
+  // },
 
-  markAdopted: function() {
-    /*
-     * Replace me...
-     */
-  },
 
-  handleAdopt: function(event) {
-    event.preventDefault();
+}
 
-    var petId = parseInt($(event.target).data('id'));
 
-    /*
-     * Replace me...
-     */
-  }
-
-};
-
-$(function() {
-  $(window).load(function() {
-    App.init();
-  });
+$(window).on('load', function() {
+  App.init();
 });
