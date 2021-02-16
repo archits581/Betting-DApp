@@ -29,7 +29,7 @@ contract Betting {
     }
 
     // Function to get the team name.
-    function getTeamName(uint _teamId) public returns(string memory) {
+    function getTeamName(uint _teamId) public view returns(string memory) {
         if (_teamId == 0) {
             return team0.name;
         }
@@ -57,7 +57,7 @@ contract Betting {
     }
 
 
-    function getTeamBids(uint _teamId) public returns(uint) {
+    function getTeamBids(uint _teamId) public view returns(uint) {
         if (_teamId == 0) {
             return team0.bids[msg.sender];
         }
