@@ -1,0 +1,57 @@
+*{
+	box-sizing: border-box;
+	font-family: 'Inter', sans-serif;
+}
+
+.navbar{
+	z-index: 3;
+	position: fixed;
+	background-color: white !important;
+	margin-top: 10px;
+	border-radius: 35px;
+	margin-left: 10px;
+	margin-right: 10px;
+	min-height: 70px;
+    box-shadow: 0px 0px 5px 5px #f0f2f5;
+}
+
+.navbar-brand{
+	color: #007bff !important;
+	margin-left: 20px;
+	margin-right: 35px;
+}
+
+.hero-section{
+	margin-top: 100px;
+	min-height: 500px;
+}
+
+.title{
+	color: #2b2b2b;
+	position: absolute;
+	top: 50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+}
+
+.title > h1{
+	font-weight: 900;
+	font-size: 70px;
+}
+
+.title > p{
+	font-size: 25px;
+}
+
+.hero-img{
+	width: 100%;
+}
+
+@media only screen and(max-width: 768px){
+	.title{
+		margin-top: 100px;
+	}
+	.hero-img{
+		width: 30px;
+	}
+}
