@@ -504,10 +504,6 @@ App = {
     method: 'GET',
     url: 'https://dev132-cricket-live-scores-v1.p.rapidapi.com/matches.php',
     params: {completedlimit: '0', inprogresslimit: '0', upcomingLimit: '5'},
-    headers: {
-      'x-rapidapi-key': 'cb3a7f6dd9mshc9ff18976534041p1d3cc5jsn5a25a513af0f',
-      'x-rapidapi-host': 'dev132-cricket-live-scores-v1.p.rapidapi.com'
-    }
     };
     return await axios.request(options);
   },
