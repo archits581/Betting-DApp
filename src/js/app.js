@@ -1,6 +1,11 @@
-
 const Web3 = require('web3');
 
+const myPrivateEthereumNode = {
+  nodeUrl: 'http://localhost:7545',
+  chainId: 1337,
+};
+
+const portis = new Portis('83763745-de5f-40ad-86d0-29f4a95c7b79', myPrivateEthereumNode);
 
 App = {
   web3Provider: null,
@@ -17,8 +22,9 @@ App = {
   },
 
   initWeb3: function() {
-    
-    App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    console.log(Portis);
+    // App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    App.web3Provider = portis.provider;
     web3 = new Web3(App.web3Provider);
     web3.eth.defaultAccount = web3.eth.accounts[1];
     console.log(web3.eth.defaultAccount);
@@ -136,7 +142,7 @@ App = {
             document.getElementById('check').value = 1;
             document.getElementById('matchId').value = matchId;
             return App.listentoEvents();
-          })
+          }, (err) => {console.log(err)})
         }
       };
 
@@ -281,7 +287,14 @@ App = {
       // let balance = await App.matches[count].getContractBalance();
 
       
-      var bal = await web3.eth.getBalance(App.matches[count].address);
+      var bal;
+      web3.eth.getBalance(App.matches[count].address, function(error, result){
+         if(!error)
+             bal = result;
+         else
+             console.error(error);
+      });
+      
       var balance = await bal.toNumber();
       balance = await web3.fromWei(balance, 'ether');
       var inName = i + "_input";
@@ -386,9 +399,16 @@ App = {
   getContractBalance: async function(contract) {
     // var instance = await App.contracts.Betting.deployed();
     var instance = contract;
-    var bal = await web3.eth.getBalance(instance.address);
-    var balance = await bal.toNumber();
-    return web3.fromWei(balance, 'ether');
+    var bal;
+    web3.eth.getBalance(instance.address, function(error, result) {
+      if (!error) {
+        bal = JSON.stringify(result);
+      } else {
+        console.error(error);
+      }
+    });
+    // var balance = await bal.toNumber();
+    return web3.fromWei(bal, 'ether');
   },
 
   generateBid: async function( teamId, amount, contract ) {
@@ -504,6 +524,10 @@ App = {
     method: 'GET',
     url: 'https://dev132-cricket-live-scores-v1.p.rapidapi.com/matches.php',
     params: {completedlimit: '0', inprogresslimit: '0', upcomingLimit: '5'},
+    headers: {
+      'x-rapidapi-key': 'cb3a7f6dd9mshc9ff18976534041p1d3cc5jsn5a25a513af0f',
+      'x-rapidapi-host': 'dev132-cricket-live-scores-v1.p.rapidapi.com'
+    }
     };
     return await axios.request(options);
   },
